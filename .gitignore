@@ -2,10 +2,13 @@
 # 项目特定的文件/目录
 # ==============================
 
-# 忽略你代码中指定的临时下载目录（根据你的 settings.TMP_DIR 设置）
-# 请将 `proj/temp/` 替换为你的 settings.TMP_DIR 的实际路径
-# 例如，如果你的文件都下载到名为 'temp' 的文件夹中，则直接写：
+# 忽略指定的临时下载目录
 temp/
+
+# 设置的代理：
+# 只对github.com使用代理
+# git config --global http.https://github.com.proxy socks5://127.0.0.1:7897
+
 # 或者如果你知道确切路径，例如 'proj/temp'，则写：
 # proj/temp/
 
