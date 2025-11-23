@@ -5,24 +5,6 @@
 # 忽略指定的临时下载目录
 temp/
 
-# 当前设置的代理：
-# 只对github.com使用代理
-# git config --global http.https://github.com.proxy socks5://127.0.0.1:7897
-
-# 常用的clash代理配置:
-# git config --global http.proxy http://127.0.0.1:7890
-# git config --global https.proxy http://127.0.0.1:7890
-
-# # 取消所有代理设置
-# git config --global --unset http.proxy
-# git config --global --unset https.proxy
-
-# # 或只取消GitHub的代理
-# git config --global --unset http.https://github.com.proxy
-
-# 或者如果你知道确切路径，例如 'proj/temp'，则写：
-# proj/temp/
-
 # Scrapy 爬取时自动生成的中间数据/日志（通常在工作目录下产生）
 .scrapy/
 
