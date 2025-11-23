@@ -1,0 +1,78 @@
+# ==============================
+# 项目特定的文件/目录
+# ==============================
+
+# 忽略你代码中指定的临时下载目录（根据你的 settings.TMP_DIR 设置）
+# 请将 `proj/temp/` 替换为你的 settings.TMP_DIR 的实际路径
+# 例如，如果你的文件都下载到名为 'temp' 的文件夹中，则直接写：
+temp/
+# 或者如果你知道确切路径，例如 'proj/temp'，则写：
+# proj/temp/
+
+# Scrapy 爬取时自动生成的中间数据/日志（通常在工作目录下产生）
+.scrapy/
+
+# ==============================
+# Python 通用忽略规则
+# ==============================
+
+# Python 字节码编译文件
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 安装包和分发目录
+*.egg
+*.egg-info/
+dist/
+build/
+pip-wheel-metadata/
+
+# 单元测试和覆盖率报告
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# ==============================
+# 开发环境与IDE
+# ==============================
+
+# PyCharm 或其它 JetBrains IDE 的配置文件
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# VS Code 配置
+.vscode/
+
+# 操作系统自动生成的文件
+# macOS
+.DS_Store
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ==============================
+# 虚拟环境
+# ==============================
+# 永远不要将虚拟环境纳入版本控制！根据你的虚拟环境名称选择一行。
+.env
+.venv
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# ==============================
+# 日志文件
+# ==============================
+*.log
