@@ -1,0 +1,11 @@
+scrapy==2.13.3
+python-socks==2.7.2
+prefect==3.5.0
+BeautifulSoup4==4.14.2
+minio==7.2.18
+psycopg[binary]
+pydantic==2.12.3
+PyYAML==6.0.3
+fake-useragent==2.2.0
+scrapy-playwright==0.0.44
+PyMySQL==1.1.2
