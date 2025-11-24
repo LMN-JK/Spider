@@ -146,29 +146,42 @@ class EnvironmentProtectSpider(scrapy.Spider):
 
 
         # 提取标题
-        file_title = response.xpath('//div[@class="neiright_Box"]/h2/text()')
-        if file_title:
-            file_title = file_title.get().strip()
-        else:
-            file_title_elem = response.xpath('//div[@class="xqy_title"]/text()')
-            file_title = file_title_elem.get().strip() if file_title_elem else "未知标题"
-
-         # 提取发布日期
-        publish_date_elem = response.xpath('//span[@class="xqLyPc time"]/text()')
-        if publish_date_elem:
-            publish_date = publish_date_elem.get().strip()
-        else:
-            publish_date_elem = response.xpath('//div[@class="xqy_time"]/span[1]/text()')
-            publish_date = publish_date_elem.get().strip() if publish_date_elem else "未知日期"
-
+        x_t_path=['//div[@class="neiright_Box"]/h2/text()','//div[@class="xqy_title"]/text()','//div[span[contains(text(), "名")]]/p/text()']
+        file_title = None
+        for x in x_t_path:
+            file_title_elem = response.xpath(x)
+            if file_title_elem:
+                file_title = file_title_elem.get().strip()
+                break
+    
+        # 提取发布日期
+        x_d_path=['//span[@class="xqLyPc time"]/text()','//div[@class="xqy_time"]/span[1]/text()','//div[span[text()="生成日期"]]/text()']
+        publish_date_elem = None
+        publish_date = "未知日期"
+        for x in x_d_path:
+            publish_date_elem = response.xpath(x)
+            if publish_date_elem:
+                if "实施" in publish_date_elem.get().strip():
+                    publish_date = publish_date_elem.get().strip().replace(" 实施","")
+                else:
+                    publish_date = publish_date_elem.get().strip()
+                break
 
         # 提取发布单位
-        issuing_authority_elem = response.xpath('//span[@class="xqLyPc"]/text()')
-        if issuing_authority_elem:
-            issuing_authority = issuing_authority_elem.get().strip()[3:]
-        else:
-            issuing_authority_elem = response.xpath('//div[@class="xqy_time"]/span[2]/text()')
-            issuing_authority = issuing_authority_elem.get().strip() if issuing_authority_elem else "未知单位"
+        x_a_path=['//span[@class="xqLyPc"]/text()','//div[@class="xqy_time"]/span[2]/text()','//div[span[text()="发布机关"]]/div/text()']
+        issuing_authority_elem = None
+        issuing_authority = "未知单位"
+        for x in x_a_path:
+            issuing_authority_elem = response.xpath(x)
+            if issuing_authority_elem:
+                if "来源" in issuing_authority_elem.get().strip():
+                    issuing_authority = issuing_authority_elem.get().strip()[3:]
+                elif "发布机关" in x:
+                    issuing_authority = ','.join(issuing_authority_elem.getall()).strip()
+                else:
+                    issuing_authority = issuing_authority_elem.get().strip()
+                break
+        
 
         # 清理文件名中的非法字符
         safe_filename = re.sub(r'[<>:"/\\|?*]', '_', file_title)
@@ -178,18 +191,17 @@ class EnvironmentProtectSpider(scrapy.Spider):
         # 完整的本地文件路径
         local_path = os.path.join(category_dir, f"{file_title}.txt")
 
-        # 文本内容
-        text_elem = response.xpath('//div[@class="neiright_JPZ_GK_CP"]//text()[not(ancestor::style)]')
-        if not text_elem:
-            text_elem = response.xpath('//div[@class="TRS_Editor"]//text()[not(ancestor::style)]')
-        if not text_elem:
-            text_elem = response.xpath('//div[@class="Epro_Editor"]//text()[not(ancestor::style)]')
-
-        if text_elem:
-            text = ''.join(text_elem.getall()).strip()
-        else:
-            text = "无内容"
-
+        # 文本内容 
+        x_te_path=['//div[@class="neiright_JPZ_GK_CP"]//text()[not(ancestor::style)]','//div[@class="TRS_Editor"]//text()[not(ancestor::style)]','//div[@class="Custom_UnionStyle"]//text()','//div[@class="Epro_Editor"]//text()[not(ancestor::style)]']
+        text_elem = None
+        for x in x_te_path:
+            text_elem = response.xpath(x)
+            if text_elem:
+                text = ''.join(text_elem.getall()).strip()
+                break
+            else:
+                return
+    
         # 保存文件
         try:
             with open(local_path, 'w', encoding='utf-8') as f:
